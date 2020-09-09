@@ -10,6 +10,7 @@ class ofApp : public ofBaseApp{
 		void draw();
     
         void draw_circle(float radius, float cur_angle, int resolution, ofPoint center, int point_size);
+        void draw_rose(float radius, float k, float n, float cur_angle, int resolution, ofPoint center, int point_size);
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -29,7 +30,12 @@ class ofApp : public ofBaseApp{
     int point_size;
     vector<float> cur_angles;
     
+    // Rose parameters
+    float rose_k;
+    float rose_n;
+    
     // Helpers
     ofImage img;
+    int frame_count;
 		
 };
