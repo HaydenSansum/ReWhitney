@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -29,13 +30,20 @@ class ofApp : public ofBaseApp{
     int N_circles;
     int point_size;
     vector<float> cur_angles;
-    
+
     // Rose parameters
-    float rose_k;
-    float rose_n;
+    vector<float> rose_ks;
+    vector<float> rose_ns;
+//    float rose_n;
     
     // Helpers
     ofImage img;
     int frame_count;
+    
+    // GUI
+    ofxFloatSlider freq;
+    ofxIntSlider max_k;
+    ofxIntSlider rose_n;
+    ofxPanel gui;
 		
 };

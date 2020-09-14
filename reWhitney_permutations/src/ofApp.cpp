@@ -10,19 +10,28 @@ void ofApp::setup(){
     N_circles = 10;
     for (int i = 0; i < 50; i++){
         cur_angles.push_back(0);
+        rose_ks.push_back(2);
+        rose_ns.push_back(1);
     }
+    
     
     // Set up drawing
     ofBackground(0);
     ofSetColor(200,20,20);
     
-    ofSleepMillis(5000);
+    ofSleepMillis(2000);
     
-    rose_k = 2;
-    rose_n = 1;
+    //rose_k = 2;
+//    rose_n = 1;
     
     ofSetFrameRate(30);
     frame_count = 0;
+    
+    // GUI
+    gui.setup();
+    gui.add(freq.setup("freq", 0.001, 0.0001, 0.01));
+    gui.add(max_k.setup("max_k", 20, 2, 100));
+    gui.add(rose_n.setup("n", 1, 1, 10));
     
 }
 
@@ -31,11 +40,15 @@ void ofApp::update(){
     float cur_time = ofGetElapsedTimef();
     
     for (float i = 0; i < N_circles; i++) {
-        cur_angles[i] = cur_angles[i] + ((10+(i/10))*sin(cur_time * (i * 0.001))*0.02);
+        cur_angles[i] = cur_angles[i] + ((10+(i/10))*sin(cur_time * ((i+1) * 0.001))*0.02);
     }
     
     if (frame_count % 30) {
-        rose_k = rose_k + 0.004;
+        // Every 30 frames update each K - update based on a sine wave of different frequencies
+        for (float i = 0; i < N_circles; i++) {
+            float k_new = ofMap(sin(cur_time * freq), -1, 1, 2, max_k);
+            rose_ks[i] = k_new;
+        }
     }
     
     
@@ -48,9 +61,11 @@ void ofApp::draw(){
     
     for (float i = 0; i < N_circles; i++) {
         float cur_angle = cur_angles[i];
-        draw_rose(300, rose_k, rose_n, cur_angle + (i*0.05), 300, center_pos, point_size);
+        float cur_rose_k = rose_ks[i];
+        draw_rose(300, cur_rose_k, rose_n, cur_angle + (i*0.05), 300, center_pos, point_size);
     }
     
+    gui.draw();
 }
 
 
